@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Adopt Me</title>
+  </head>
+
+  <body>
+    <div id="root">
+      Something went wrong, React components are not rendered...
+    </div>
+    <!-- scripts enable React globally:
+      React script = general API with almost all methods; 
+      ReactDOM is for rendering in Browsers specifically (vs React Native, React VS/360 etc.)
+    -->
+    <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script>
+      /////////////////////////////////////////////////
+      // PART 1 - Basics
+
+      const App = () => {
+        /*
+          createElement() method takes 3 args: 
+          1.) name of the HTML element as string; can be fantasy elements like <not-a-div> too
+          2.) attributes as object: {id: "root"}
+          3.) nested child element(s)/innerHTML/text content: <h1>Adopt Me!</h1>
+        */
+        return React.createElement(
+          "div",
+          {},
+          React.createElement("h1", {}, "Adopt Me!")
+        );
+      };
+
+      /*
+       ReactDOM's createRoot() method creates an "entry point" for React components to be rendered in index.html, connecting to a "real" HTML element. Using the render() method then renders out a concrete Instance of the component blueprint with its content, here our <div> element with <h1> inside
+      Note: could also go: createElement(App, {}, null)
+      */
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(React.createElement(App));
+
+      /////////////////////////////////////////////////
+      // PART 2 - Components & Props
+
+      /* 
+        Components = like regular functions & Classes blueprints/generalized set of instructions that can be used to produce very different output that still adhere to same rules and requirements.
+        
+        Concept behind React: Multiple reusable components, used as Lego blocks to build larger components which finally make up the entire app!
+      */
+      const Pet = (props) => {
+        /* 
+          React knows by default how to handle arrays -> renders every array element as a new HTML element 
+          Would also work w/o array as just list of comma-separated createElement's = "variable arity" in CS, but under the hood still an array...
+        */
+        return React.createElement("div", {}, [
+          React.createElement("h1", {}, props.name),
+          React.createElement("h2", {}, props.animal),
+          React.createElement("h2", {}, props.breed),
+        ]);
+      };
+
+      const App2 = () => {
+        return React.createElement("div", {}, [
+          React.createElement("h1", {}, "Adopt Me!"),
+          // attributes object can also have JSX props
+          React.createElement(Pet, {
+            name: "Luna",
+            animal: "Dog",
+            breed: "Havanese",
+          }),
+          React.createElement(Pet, {
+            name: "Pepper",
+            animal: "Bird",
+            breed: "Cockatiel",
+          }),
+          React.createElement(Pet, {
+            name: "Doink",
+            animal: "Cat",
+            breed: "Mixed",
+          }),
+        ]);
+      };
+
+      const container2 = document.getElementById("root");
+      const root2 = ReactDOM.createRoot(container2);
+      root2.render(React.createElement(App2));
+    </script>
+  </body>
+</html>
