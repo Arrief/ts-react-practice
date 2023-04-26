@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useBreedList from "./useBreedList";
-import Pet from "./Pet";
+import Results from "./Results";
 
 const ANIMALS = ["bird", "cat", "dog", "reptile", "rabbit"];
 
@@ -10,7 +10,7 @@ const SearchParams = () => {
   const [breed, setBreed] = useState("");
   const [pets, setPets] = useState([]);
   // custom Hook
-  const breeds = useBreedList(animal);
+  const [breeds] = useBreedList(animal);
 
   useEffect(() => {
     //? Note to self: function call here before function declaration works because of hoisting, but only with fn declaration like below, expression and arrow would not get hoisted
@@ -34,49 +34,60 @@ const SearchParams = () => {
           requestPets();
         }}
       >
-        <label htmlFor="location">Location</label>
-        <input
-          id="location"
-          value={location}
-          placeholder="Location"
-          onChange={(e) => setLocation(e.target.value)}
-        />
-        <label htmlFor="animal">Animal</label>
-        <select
-          id="animal"
-          value={animal}
-          onChange={(e) => {
-            setAnimal(e.target.value);
-            setBreed("");
-          }}
-        >
-          <option />
-          {ANIMALS.map((animal) => (
-            <option key={animal}>{animal}</option>
-          ))}
-        </select>
-        <label htmlFor="breed">Breed</label>
-        <select
-          id="breed"
-          disabled={breed.length === 0}
-          value={breed}
-          onChange={(e) => setBreed(e.target.value)}
-        >
-          <option />
-          {breeds.map((breed) => (
-            <option key={breed}>{breed}</option>
-          ))}
-        </select>
-        <button type="submit">Submit</button>
+        <label htmlFor="location">
+          Location
+          <input
+            id="location"
+            value={location}
+            placeholder="Location"
+            onChange={(e) => setLocation(e.target.value)}
+          />
+        </label>
+
+        <label htmlFor="animal">
+          Animal
+          <select
+            id="animal"
+            value={animal}
+            onChange={(e) => {
+              setAnimal(e.target.value);
+              setBreed("");
+            }}
+            onBlur={(e) => {
+              setAnimal(e.target.value);
+              setBreed("");
+            }}
+          >
+            <option />
+            {ANIMALS.map((animal) => (
+              <option key={animal} value={animal}>
+                {animal}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label htmlFor="breed">
+          Breed
+          <select
+            disabled={!breeds.length}
+            id="breed"
+            value={breed}
+            onChange={(e) => setBreed(e.target.value)}
+            onBlur={(e) => setBreed(e.target.value)}
+          >
+            <option />
+            {breeds.map((breed) => (
+              <option key={breed} value={breed}>
+                {breed}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <button>Submit</button>
       </form>
-      {pets.map((pet) => (
-        <Pet
-          key={pet.id}
-          name={pet.name}
-          animal={pet.animal}
-          breed={pet.breed}
-        />
-      ))}
+      <Results pets={pets} />
     </div>
   );
 };
