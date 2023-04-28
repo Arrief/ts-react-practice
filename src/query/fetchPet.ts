@@ -1,9 +1,14 @@
 //* ReactQuery function
-const fetchPet = async ({ queryKey }) => {
+import { QueryFunction } from "@tanstack/react-query";
+import { PetAPIResponse } from "../types/APIResponsesTypes";
+
+const fetchPet: QueryFunction<PetAPIResponse, ["details", string]> = async ({
+  queryKey,
+}) => {
   // queryKey = array, 2nd element = id
   const id = queryKey[1];
 
-  const apiRes = await fetch(`https://pets-v2.dev-apis.com/pets?id=${id}`);
+  const apiRes = await fetch(`http://pets-v2.dev-apis.com/pets?id=${id}`);
 
   // React Query expects us to throw Error if fetch was unsuccessful, can be caught by ReQu
   if (!apiRes.ok) throw new Error(`details/${id} fetch failed`);

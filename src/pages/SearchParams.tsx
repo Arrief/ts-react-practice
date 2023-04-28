@@ -1,19 +1,20 @@
 import { useState, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import AdoptedPetContext from "./AdoptedPetContext";
-import Results from "./Results";
-import useBreedList from "./useBreedList";
-import fetchSearch from "./fetchSearch";
+import AdoptedPetContext from "../context/AdoptedPetContext";
+import Results from "../components/Results";
+import useBreedList from "../query/useBreedList";
+import fetchSearch from "../query/fetchSearch";
+import { Animal } from "../types/APIResponsesTypes";
 
-const ANIMALS = ["bird", "cat", "dog", "reptile", "rabbit"];
+const ANIMALS: Animal[] = ["bird", "cat", "dog", "reptile", "rabbit"];
 
 const SearchParams = () => {
   const [requestParams, setRequestParams] = useState({
     location: "",
-    animal: "",
+    animal: "" as Animal,
     breed: "",
   });
-  const [animal, setAnimal] = useState("");
+  const [animal, setAnimal] = useState("" as Animal);
   // ReactQuery function
   const [breeds] = useBreedList(animal);
   const [adoptedPet, _] = useContext(AdoptedPetContext);
@@ -27,13 +28,16 @@ const SearchParams = () => {
         onSubmit={(e) => {
           e.preventDefault();
 
-          // Browser API Class, pulls out all data from a form as new object, given a form
-          const formData = new FormData(e.target);
+          // Browser API Class, pulls out all data from a form as new object, given a form;
+          // currentTarget will always be defined, with "just" target TS will throw an error
+          const formData = new FormData(e.currentTarget);
 
           const obj = {
-            animal: formData.get("animal") ?? "",
-            breed: formData.get("breed") ?? "",
-            location: formData.get("location") ?? "",
+            // formData.get() returns a type of FormDataEntryValue -> stringify
+            animal:
+              (formData.get("animal")?.toString() as Animal) ?? ("" as Animal),
+            breed: formData.get("breed")?.toString() ?? "",
+            location: formData.get("location")?.toString() ?? "",
           };
 
           setRequestParams(obj);
@@ -55,9 +59,9 @@ const SearchParams = () => {
           Animal
           <select
             id="animal"
-            value={animal}
+            name="animal"
             onChange={(e) => {
-              setAnimal(e.target.value);
+              setAnimal(e.target.value as Animal);
             }}
           >
             <option />

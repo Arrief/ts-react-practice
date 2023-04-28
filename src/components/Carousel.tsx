@@ -1,6 +1,10 @@
-import { Component } from "react";
+import { Component, MouseEvent } from "react";
 
-class Carousel extends Component {
+interface IProps {
+  images: string[];
+}
+
+class Carousel extends Component<IProps> {
   /* constructor now optional with class properties:
   constructor() {
     super();
@@ -18,11 +22,15 @@ class Carousel extends Component {
   };
 
   // arrow function is best solution here to ensure "this" is what we think it is and want it to be => no own scope for arrow fn, refers to Class
-  handleIndexClick = (event) => {
-    this.setState({
-      // index is a number originally but comes as string from DOM -> convert again
-      active: +event.target.dataset.index,
-    });
+  handleIndexClick = (event: MouseEvent<HTMLElement>) => {
+    if (!(event.target instanceof HTMLElement)) return;
+
+    if (event.target.dataset.index) {
+      this.setState({
+        // index is a number originally but comes as string from DOM -> convert again
+        active: +event.target.dataset.index,
+      });
+    }
   };
 
   render() {
@@ -31,7 +39,7 @@ class Carousel extends Component {
 
     return (
       <div className="carousel">
-        <img scr={images[active]} alt="animal hero" />
+        <img src={images[active]} alt="animal hero" />
         <div className="carousel-smaller">
           {images.map((photo, index) => (
             <img

@@ -4,10 +4,10 @@ Can only catch errors in its children however, not within itself! So make it a w
 
 See: reactjs.org/docs/error-boundaries.html 
 */
-import { Component } from "react";
+import { Component, ErrorInfo, ReactElement } from "react";
 import { Link } from "react-router-dom";
 
-class ErrorBoundary extends Component {
+class ErrorBoundary extends Component<{ children: ReactElement }> {
   state = { hasError: false };
 
   // Static method working like a state updater, is a helper method to be called directly on the Class itself, not on Instances
@@ -16,7 +16,7 @@ class ErrorBoundary extends Component {
   }
 
   // Lifecycle method
-  componentDidCatch(error, info) {
+  componentDidCatch(error: Error, info: ErrorInfo) {
     // Works great in combination with Sentry and/or Track.js!
     console.error("ErrorBoundary caught an error", error, info);
   }

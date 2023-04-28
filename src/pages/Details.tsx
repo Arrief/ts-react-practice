@@ -1,11 +1,11 @@
 import { useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import AdoptedPetContext from "./AdoptedPetContext";
-import ErrorBoundary from "./ErrorBoundary";
-import Carousel from "./Carousel";
-import fetchPet from "./fetchPet";
-import Modal from "./Modal";
+import AdoptedPetContext from "../context/AdoptedPetContext";
+import ErrorBoundary from "../components/ErrorBoundary";
+import Carousel from "../components/Carousel";
+import fetchPet from "../query/fetchPet";
+import Modal from "../components/Modal";
 
 const Details = () => {
   const [showModal, setShowModal] = useState(false);
@@ -13,6 +13,12 @@ const Details = () => {
   const [_, setAdoptedPet] = useContext(AdoptedPetContext);
 
   const { id } = useParams();
+  if (!id) {
+    throw new Error(
+      "Why did you not give me an id?! I wanted an id! I have no id!!!"
+    );
+  }
+
   // give useQuery caching string & a key of what we request & a function to call in case the key is not stored in the cache yet
   const results = useQuery(["details", id], fetchPet);
 
@@ -20,7 +26,7 @@ const Details = () => {
   if (results.isLoading) {
     return (
       <div className="loading-pane">
-        <h2 className="loader">🌀</h2>
+        <h2 className="loader">🐶</h2>
       </div>
     );
   }
@@ -29,7 +35,8 @@ const Details = () => {
     return <h2>Oh no, something went wrong 😿</h2>;
   }
 
-  const pet = results.data.pets[0];
+  const pet = results?.data?.pets[0];
+  if (!pet) throw new Error("No pet... 😿");
 
   return (
     <div className="details">
