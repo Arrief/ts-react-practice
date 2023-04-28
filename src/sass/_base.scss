@@ -1,0 +1,13 @@
+@use "./abstracts" as *;
+
+* {
+  box-sizing: border-box;
+  color: $dark-main;
+}
+
+body {
+  background-color: #81a69b;
+  background-image: url(http://pets-images.dev-apis.com/pets/wallpaperB.jpg);
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}

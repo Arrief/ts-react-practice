@@ -1,0 +1,33 @@
+@use "./abstracts" as *;
+
+.carousel {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 400px;
+  margin-top: 8px;
+
+  & > img {
+    max-width: 45%;
+    max-height: 400px;
+  }
+}
+
+.carousel-smaller {
+  width: 50%;
+
+  & > img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 15px;
+    cursor: pointer;
+    border: 2px solid $dark-main;
+  }
+
+  & > img.active {
+    border-color: $dark-main;
+    opacity: 0.6;
+  }
+}

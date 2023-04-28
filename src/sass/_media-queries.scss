@@ -1,0 +1,79 @@
+@use "./abstracts" as *;
+
+@media only screen and (max-width: 1129px) {
+  header {
+    @include flex-center;
+    width: 95%;
+    margin: 0 auto;
+    padding: 20px 0px 0px 0px;
+  }
+
+  .search-params {
+    width: 95%;
+
+    form {
+      margin-bottom: 20px;
+    }
+  }
+
+  .search {
+    width: 55%;
+    padding: 15px;
+    border-radius: 9px;
+    float: left;
+    margin-bottom: 25px;
+  }
+
+  .details {
+    width: 95%;
+    margin: 0 auto;
+    padding: 15px;
+    border-radius: 9px;
+    margin-bottom: 25px;
+  }
+
+  .info {
+    width: 65%;
+
+    h1 {
+      @include block-format;
+      width: 100%;
+    }
+
+    h2 {
+      @include block-format;
+      width: 100%;
+    }
+  }
+}
+
+@media only screen and (max-width: 945px) {
+  .search-params {
+    width: 95%;
+  }
+
+  .search {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .pet {
+    height: 200px;
+  }
+
+  .info {
+    width: 100%;
+    text-align: center;
+  }
+
+  .image-container {
+    margin: 0 auto;
+    float: none;
+  }
+
+  .carousel-smaller > img {
+    width: 60px;
+    height: 60px;
+  }
+}

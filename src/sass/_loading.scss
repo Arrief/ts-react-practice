@@ -1,0 +1,25 @@
+@use "./abstracts" as *;
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-pane {
+  @include flex-center;
+  padding: 15px;
+}
+
+.loader {
+  font-size: 100px;
+  animation: spin 1s linear infinite;
+}
+
+.mini.loading-pane {
+  height: 34px;
+}
+
+.mini .loader {
+  font-size: 34px;
+}
