@@ -1,20 +1,23 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import AdoptedPetContext from "./AdoptedPetContext";
+import { useDispatch } from "react-redux";
+import { adopt } from "./adoptedPetSlice";
 import ErrorBoundary from "./ErrorBoundary";
 import Carousel from "./Carousel";
 import fetchPet from "./fetchPet";
 import Modal from "./Modal";
 
 const Details = () => {
-  const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
-  const [_, setAdoptedPet] = useContext(AdoptedPetContext);
-
   const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [showModal, setShowModal] = useState(false);
+
   // give useQuery caching string & a key of what we request & a function to call in case the key is not stored in the cache yet
   const results = useQuery(["details", id], fetchPet);
+  // Allows passing actions to Redux core store
+  const dispatch = useDispatch();
 
   // isLoading & isError properties come from ReactQuery
   if (results.isLoading) {
@@ -48,7 +51,7 @@ const Details = () => {
                 <div className="buttons">
                   <button
                     onClick={() => {
-                      setAdoptedPet(pet);
+                      dispatch(adopt(pet));
                       navigate("/");
                     }}
                   >

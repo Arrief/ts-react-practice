@@ -1,10 +1,10 @@
-import { useState } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import AdoptedPetContext from "./AdoptedPetContext";
-import SearchParams from "./SearchParams";
+import { Provider } from "react-redux";
+import store from "./store";
 import Details from "./Details";
+import SearchParams from "./SearchParams";
 
 // possible to have multiple queryClients in one app, rarely needed
 const queryClient = new QueryClient({
@@ -19,14 +19,12 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
-  // will become available to entire app with Context, entire state array with value & update fn
-  const adoptedPet = useState(null);
-
   return (
     <BrowserRouter>
       {/* Provides context for the entire app, like BrowserRouter = "higher order/wrapping component" */}
       <QueryClientProvider client={queryClient}>
-        <AdoptedPetContext.Provider value={adoptedPet}>
+        {/* Redux store instead of Context */}
+        <Provider store={store}>
           <header>
             <Link to="/">Adopt Me!</Link>
           </header>
@@ -34,7 +32,7 @@ const App = () => {
             <Route path="/" element={<SearchParams />} />
             <Route path="/details/:id" element={<Details />} />
           </Routes>
-        </AdoptedPetContext.Provider>
+        </Provider>
       </QueryClientProvider>
     </BrowserRouter>
   );

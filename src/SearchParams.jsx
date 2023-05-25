@@ -1,24 +1,30 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import AdoptedPetContext from "./AdoptedPetContext";
+import { useSelector, useDispatch } from "react-redux";
 import Results from "./Results";
 import useBreedList from "./useBreedList";
 import fetchSearch from "./fetchSearch";
+import { all } from "./searchParamsSlice.js";
 
 const ANIMALS = ["bird", "cat", "dog", "reptile", "rabbit"];
 
 const SearchParams = () => {
-  const [requestParams, setRequestParams] = useState({
-    location: "",
-    animal: "",
-    breed: "",
-  });
   const [animal, setAnimal] = useState("");
   // ReactQuery function
   const [breeds] = useBreedList(animal);
-  const [adoptedPet, _] = useContext(AdoptedPetContext);
+  /* //* Function to get data from Redux and also a "subscription" to Redux => if adoptedPet changes, Redux will register the change an rerender.
 
-  const results = useQuery(["search", requestParams], fetchSearch);
+  //* Needs a function as arg to get specifically what we need for this component; otherwise, if we just get "state" from useSelector(), then this component will rerender whenever ANYTHING stored in Redux changes
+  */
+  const adoptedPet = useSelector((state) => state.adoptedPet.value);
+
+  const searchParams = useSelector((state) => state.searchParams.value);
+
+  // For useDispatch explanation, see Details.jsx
+  const dispatch = useDispatch();
+
+  const results = useQuery(["search", searchParams], fetchSearch);
+
   const pets = results?.data?.pets ?? [];
 
   return (
@@ -36,7 +42,7 @@ const SearchParams = () => {
             location: formData.get("location") ?? "",
           };
 
-          setRequestParams(obj);
+          dispatch(all(obj));
         }}
       >
         {/* Display the pet already adopted by user */}
