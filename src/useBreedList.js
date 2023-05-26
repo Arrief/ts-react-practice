@@ -1,10 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
-import fetchBreedList from "./fetchBreedList";
+import { useGetBreedsQuery } from "./petApiService";
 
-//* ReactQuery function
+//* Redux Toolkit React Query function
 export default function useBreedList(animal) {
-  const results = useQuery(["breeds", animal], fetchBreedList);
+  const { data: breeds, isLoading } = useGetBreedsQuery(animal, {
+    // Don't make any request if we receive no animal
+    skip: !animal,
+  });
+
+  if (!animal) {
+    return [[], "loaded"];
+  }
 
   // return data or empty array
-  return [results?.data?.breeds ?? [], results.status];
+  return [breeds ?? [], isLoading ? "loading" : "loaded"];
 }

@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
+import { useGetPetQuery } from "./petApiService";
 import { adopt } from "./adoptedPetSlice";
 import ErrorBoundary from "./ErrorBoundary";
 import Carousel from "./Carousel";
-import fetchPet from "./fetchPet";
 import Modal from "./Modal";
 
 const Details = () => {
@@ -14,13 +13,12 @@ const Details = () => {
 
   const [showModal, setShowModal] = useState(false);
 
-  // give useQuery caching string & a key of what we request & a function to call in case the key is not stored in the cache yet
-  const results = useQuery(["details", id], fetchPet);
+  const { isLoading, data: pet } = useGetPetQuery(id);
   // Allows passing actions to Redux core store
   const dispatch = useDispatch();
 
   // isLoading & isError properties come from ReactQuery
-  if (results.isLoading) {
+  if (isLoading) {
     return (
       <div className="loading-pane">
         <h2 className="loader">🌀</h2>
@@ -31,8 +29,6 @@ const Details = () => {
   if (results.isError) {
     return <h2>Oh no, something went wrong 😿</h2>;
   }
-
-  const pet = results.data.pets[0];
 
   return (
     <div className="details">
