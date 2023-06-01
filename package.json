@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{js, jsx, ts, tsx}\"",
     "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "test:coverage": "vitest --coverage"
   },
   "author": "Arne Rief",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "react-router-dom": "^6.10.0"
   },
   "devDependencies": {
+    "@testing-library/react": "^14.0.0",
     "@vitejs/plugin-react": "^4.0.0",
     "eslint": "^8.39.0",
     "eslint-config-prettier": "^8.8.0",
@@ -27,7 +29,10 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "happy-dom": "^9.20.3",
     "prettier": "^2.8.8",
-    "vite": "^4.3.2"
+    "vite": "^4.3.2",
+    "vitest": "^0.31.3",
+    "vitest-fetch-mock": "^0.2.2"
   }
 }
